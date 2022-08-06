@@ -24,7 +24,9 @@ import {
   Price,
   About,
   Accessories,
+  Footer,
 } from './styles'
+import { Button } from '../../components/Button';
 
 export function CarDetails() {
   return (
@@ -48,12 +50,12 @@ export function CarDetails() {
           </Rent>
         </Details>
         <Accessories>
-          <Accessory name="380Km/h"  icon={SpeedSvg} />
-          <Accessory name="3.2s"  icon={AccelerationSvg} />
-          <Accessory name="800 Hp"  icon={ForceSvg} />
-          <Accessory name="Gasolina"  icon={GasolineSvg} />
-          <Accessory name="Auto"  icon={ExchangeSvg} />
-          <Accessory name="2 pessoas"  icon={PeopleSvg} />
+          <Accessory name="380Km/h" icon={SpeedSvg} />
+          <Accessory name="3.2s" icon={AccelerationSvg} />
+          <Accessory name="800 Hp" icon={ForceSvg} />
+          <Accessory name="Gasolina" icon={GasolineSvg} />
+          <Accessory name="Auto" icon={ExchangeSvg} />
+          <Accessory name="2 pessoas" icon={PeopleSvg} />
         </Accessories>
         <About>
           Este é um automovel desportivo. surgiu do lendario
@@ -61,6 +63,9 @@ export function CarDetails() {
           É um belissimo carro para quem gosta de acelerar
         </About>
       </Content>
+      <Footer>
+        <Button title="confirmar" />
+      </Footer>
     </Container>
   );
 }
