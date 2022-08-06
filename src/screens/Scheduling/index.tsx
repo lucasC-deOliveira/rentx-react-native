@@ -17,6 +17,7 @@ import {
   Footer,
 
 } from './styles'
+import { Calendar } from '../../components/Calendar';
 
 
 
@@ -53,7 +54,7 @@ export function Scheduling() {
         </RentalPeriod>
       </Header>
       <Content>
-
+        <Calendar/>
       </Content>
       <Footer>
         <Button title='Confirmar'/>
