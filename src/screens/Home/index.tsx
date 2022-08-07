@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RFValue } from "react-native-responsive-fontsize"
-
+import {Ionicons} from "@expo/vector-icons"
 import {
   Container,
   Header,
   TotalCars,
   HeaderContent,
-  CarList
+  CarList,
+  MyCarsButton
 } from './styles'
 
 import Logo from "../../assets/logo.svg";
@@ -16,6 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import api from "../../services/api"
 import { CarDTO } from '../../dtos/CarDTO';
 import { Load } from '../../components/Load';
+import { useTheme } from 'styled-components';
 
 
 
@@ -25,6 +27,8 @@ export function Home() {
 
   const [loading, setLoading] = useState(true)
 
+  const theme = useTheme()
+  
   useEffect(() => {
     async function fetchCars() {
       try {
@@ -47,6 +51,12 @@ export function Home() {
   function handleCarDetails(car: CarDTO) {
     navigation.navigate("CarDetails", {car})
   }
+
+  
+  function handleOpenMyCars(car: CarDTO) {
+    navigation.navigate("MyCars")
+  }
+
 
   return (
     <Container>
@@ -73,7 +83,13 @@ export function Home() {
           renderItem={({ item }) => <Car data={item} onPress={()=>handleCarDetails(item)} />}
         />
       }
-
+      <MyCarsButton onPress={handleOpenMyCars}>
+        <Ionicons 
+        name="ios-car-sport"
+        size={32}
+        color={theme.colors.shape}
+        />
+      </MyCarsButton>
     </Container>
   );
 }
