@@ -18,19 +18,27 @@ import {
 
 } from './styles'
 import { Calendar } from '../../components/Calendar';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 export function Scheduling() {
   const theme = useTheme()
+
+  const navigation = useNavigation<any>()
+
+  function handleConfirm(){
+    navigation.navigate("SchedulingDetails")
+  }
+
   return (
     <Container>
       <Header>
-      <StatusBar
-        barStyle='light-content'
-        translucent
-        backgroundColor="transparent"
-        />  
+        <StatusBar
+          barStyle='light-content'
+          translucent
+          backgroundColor="transparent"
+        />
         <BackButton
           onPress={() => { }}
           color={theme.colors.shape}
@@ -54,10 +62,13 @@ export function Scheduling() {
         </RentalPeriod>
       </Header>
       <Content>
-        <Calendar/>
+        <Calendar />
       </Content>
       <Footer>
-        <Button title='Confirmar'/>
+        <Button
+          title='Confirmar'
+          onPress={handleConfirm}
+        />
       </Footer>
     </Container>
   );
