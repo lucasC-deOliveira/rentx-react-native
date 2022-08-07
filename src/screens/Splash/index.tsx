@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { Button, Dimensions, StyleSheet } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 import {
   Container,
 } from './styles'
+
+const WIDTH= Dimensions.get("window").width;
 
 export function Splash() {
 
@@ -17,7 +19,7 @@ export function Splash() {
   })
 
   function handleAnimationPosition(){
-    animation.value=100
+    animation.value= Math.random() * (WIDTH -100);
   }
 
   return (
