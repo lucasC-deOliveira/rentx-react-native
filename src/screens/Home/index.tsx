@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, BackHandler } from 'react-native';
 import { RFValue } from "react-native-responsive-fontsize"
 import { Ionicons } from "@expo/vector-icons"
 import Logo from "../../assets/logo.svg";
@@ -29,6 +29,7 @@ import {
   CarList,
   MyCarsButton
 } from './styles'
+import { isLoading } from 'expo-font';
 
 
 
@@ -53,11 +54,11 @@ export function Home() {
   })
 
   const onGestureEvent = useAnimatedGestureHandler({
-    onStart(_,ctx:any) {
+    onStart(_, ctx: any) {
       ctx.positionX = positionX.value
       ctx.positionY = positionY.value
     },
-    onActive(event, ctx:any) {
+    onActive(event, ctx: any) {
       positionX.value = event.translationX + ctx.positionX
       positionY.value = event.translationY + ctx.positionY
     },
@@ -83,6 +84,12 @@ export function Home() {
 
     }
     fetchCars()
+  }, [])
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true;
+    })
   }, [])
 
   const navigation = useNavigation<any>()
@@ -112,9 +119,12 @@ export function Home() {
             width={RFValue(108)}
             height={RFValue(12)}
           />
-          <TotalCars>
-            Total de {cars.length} carros
-          </TotalCars>
+          {!loading && (
+            <TotalCars>
+              Total de {cars.length} carros
+            </TotalCars>
+          )}
+
         </HeaderContent>
       </Header>
       {loading ? <Load /> :
