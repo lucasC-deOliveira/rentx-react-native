@@ -38,7 +38,7 @@ export function Scheduling() {
   const route = useRoute()
 
   const { car } = route.params as Params;
-  
+    
   const [lastSelectedDate, setLastSelectedDate] = useState<DayProps>({} as DayProps)
 
   const [markedDates, setMarkedDates] = useState<CalendarProps["markedDates"]>({} as CalendarProps["markedDates"])
