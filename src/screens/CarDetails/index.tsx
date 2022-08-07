@@ -95,21 +95,20 @@ export function CarDetails() {
       />
       <Animated.View
         style={[headerStyleAnimation,
-           styles.header,
-           {backgroundColor: theme.colors.background_secondary}
-          ]}
+          styles.header,
+          { backgroundColor: theme.colors.background_secondary }
+        ]}
       >
         <Header>
-          <BackButton onPress={handleBack}  />
+          <BackButton onPress={handleBack} />
         </Header>
-        <Animated.View
-          style={[sliderCarsStyleAnimation]}
-        >
-          <CarImages>
+        <CarImages>
+          <Animated.View style={sliderCarsStyleAnimation}>
             <ImageSlider
-              imagesUrl={car.photos} />
-          </CarImages>
-        </Animated.View>
+              imagesUrl={car.photos}
+            />
+          </Animated.View>
+        </CarImages>
       </Animated.View>
       <Animated.ScrollView
         contentContainerStyle={{
