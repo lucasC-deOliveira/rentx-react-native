@@ -7,7 +7,6 @@ import { Car } from '../../components/Car';
 import { useNavigation } from '@react-navigation/native';
 import api from "../../services/api"
 import { CarDTO } from '../../dtos/CarDTO';
-import { Load } from '../../components/Load';
 import { useTheme } from 'styled-components';
 import { PanGestureHandler, RectButton } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
@@ -29,10 +28,11 @@ import {
   CarList,
   MyCarsButton
 } from './styles'
-import { isLoading } from 'expo-font';
+import { LoadAnimation } from '../../components/LoadAnimation';
 
 
 
+//lottiefiles site de animações
 
 export function Home() {
 
@@ -127,7 +127,7 @@ export function Home() {
 
         </HeaderContent>
       </Header>
-      {loading ? <Load /> :
+      {loading ? <LoadAnimation /> :
         <CarList
           data={cars}
           keyExtractor={item => item.id}
