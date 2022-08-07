@@ -75,6 +75,8 @@ export function SchedulingDetails() {
 
     await api.post("schedules_byuser",{
       user_id: 1,
+      startDate:format(getPlatformDate(new Date(dates[0])),"dd/MM/yyyy"),
+      endDate:format(getPlatformDate(new Date(dates[dates.length - 1])),"dd/MM/yyyy"),
       car
     })
 
@@ -164,7 +166,11 @@ export function SchedulingDetails() {
         </RentalPrice>
       </Content>
       <Footer>
-        <Button title="Alugar agora" color={theme.colors.success} onPress={handleConfirm} />
+        <Button 
+        title="Alugar agora" 
+        color={theme.colors.success} 
+        onPress={handleConfirm} 
+        />
       </Footer>
     </Container>
   );
