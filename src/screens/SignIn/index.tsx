@@ -1,4 +1,12 @@
 import React, { useState } from 'react';
+import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
+import theme from '../../styles/theme';
+import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../hooks/auth';
+import * as Yup from "yup"
+
 import {
   StatusBar,
   KeyboardAvoidingView,
@@ -6,12 +14,6 @@ import {
   Keyboard,
   Alert
 } from 'react-native';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { PasswordInput } from '../../components/PasswordInput';
-import theme from '../../styles/theme';
-
-import * as Yup from "yup"
 
 import {
   Container,
@@ -21,7 +23,6 @@ import {
   Footer,
   Form
 } from './styles'
-import { useNavigation } from '@react-navigation/native';
 
 export function SignIn() {
 
@@ -30,6 +31,8 @@ export function SignIn() {
   const [password, setPassword] = useState('')
 
   const navigation = useNavigation<any>()
+
+  const { signIn } = useAuth()
 
   async function handleSignIn() {
     try {
@@ -47,7 +50,8 @@ export function SignIn() {
 
       await schema.validate({ email, password })
 
-      Alert.alert("tudo certo brow")
+      signIn({ email, password })
+      
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("ops!")
