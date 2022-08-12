@@ -3,12 +3,15 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
 import theme from '../../styles/theme';
+
+import * as Yup from "yup"
 
 import {
   Container,
@@ -24,6 +27,37 @@ export function SignIn() {
   const [email, setEmail] = useState('')
 
   const [password, setPassword] = useState('')
+
+  async function handleSignIn() {
+    try {
+
+      const schema = Yup.object().shape({
+        email: Yup.string()
+          .required("E-mail obrigatorio.")
+          .email("Digite um e-mail valido")
+        ,
+
+        password: Yup.string()
+          .required("A senha é obrigatoria")
+
+      })
+
+      await schema.validate({ email, password })
+
+      Alert.alert("tudo certo brow")
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        return Alert.alert("ops!")
+      }
+      else{
+        Alert.alert(
+          "Erro na validação",
+          "Ocorreu um erro ao fazer login, verifique as credenciais"
+          )
+      }
+    }
+
+  }
 
   return (
     <KeyboardAvoidingView
@@ -66,8 +100,8 @@ export function SignIn() {
           <Footer>
             <Button
               title='Login'
-              onPress={() => { }}
-              enabled={false}
+              onPress={handleSignIn}
+              enabled={true}
               loading={false}
             />
             <Button
