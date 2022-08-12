@@ -21,12 +21,15 @@ import {
   Footer,
   Form
 } from './styles'
+import { useNavigation } from '@react-navigation/native';
 
 export function SignIn() {
 
   const [email, setEmail] = useState('')
 
   const [password, setPassword] = useState('')
+
+  const navigation = useNavigation<any>()
 
   async function handleSignIn() {
     try {
@@ -49,14 +52,18 @@ export function SignIn() {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("ops!")
       }
-      else{
+      else {
         Alert.alert(
           "Erro na validação",
           "Ocorreu um erro ao fazer login, verifique as credenciais"
-          )
+        )
       }
     }
 
+  }
+
+  async function handleNewAccount() {
+    navigation.navigate('SignUpFirstStep')
   }
 
   return (
@@ -107,8 +114,8 @@ export function SignIn() {
             <Button
               title='Criar conta gratuita'
               color={theme.colors.background_secondary}
-              onPress={() => { }}
-              enabled={false}
+              onPress={handleNewAccount}
+              enabled={true}
               loading={false}
               light
             />
