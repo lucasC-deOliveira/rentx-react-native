@@ -8,6 +8,7 @@ interface Props {
 
 export const Container = styled.View`
 flex-direction: row;
+margin-bottom: 8px;
 
 `;
 
@@ -17,7 +18,7 @@ width: 55px;
 justify-content: center;
 align-items: center;
 
-background-color: ${({theme})=> theme.colors.background_secondary};
+background-color: ${({ theme }) => theme.colors.background_secondary};
 
 margin-right: 2px;
 
@@ -29,8 +30,8 @@ border-bottom-color: ${theme.colors.main};
 
 export const InputText = styled.TextInput<Props>`
 flex: 1;
-background-color: ${({theme})=> theme.colors.background_secondary};
-font-family: ${({theme})=> theme.fonts.primary_400};
+background-color: ${({ theme }) => theme.colors.background_secondary};
+font-family: ${({ theme }) => theme.fonts.primary_400};
 font-size: ${RFValue(15)}px;
 
 padding: 0 23px;
