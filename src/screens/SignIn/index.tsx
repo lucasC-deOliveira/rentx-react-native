@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
@@ -6,6 +6,8 @@ import theme from '../../styles/theme';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 import * as Yup from "yup"
+
+import { database } from '../../database';
 
 import {
   StatusBar,
@@ -51,7 +53,7 @@ export function SignIn() {
       await schema.validate({ email, password })
 
       signIn({ email, password })
-      
+
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return Alert.alert("ops!")
@@ -69,6 +71,19 @@ export function SignIn() {
   async function handleNewAccount() {
     navigation.navigate('SignUpFirstStep')
   }
+
+  useEffect(() => {
+    async function loadData() {
+      const userCollection = database.get('users')
+
+      const users = await userCollection.query().fetch()
+
+      console.log(users)
+    }
+
+    loadData()
+  }, [])
+
 
   return (
     <KeyboardAvoidingView
