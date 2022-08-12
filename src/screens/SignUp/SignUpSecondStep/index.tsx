@@ -6,6 +6,7 @@ import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
 import { Button } from '../../../components/Button';
 import { PasswordInput } from '../../../components/PasswordInput';
+import { Confirmation } from "../../Confirmation"
 
 interface Params {
   user: {
@@ -38,7 +39,6 @@ export function SignUpSecondStep() {
   const theme = useTheme()
 
   const { user } = route.params as Params
-  console.log(user)
 
   function handleBack() {
     navigation.goBack()
@@ -52,6 +52,12 @@ export function SignUpSecondStep() {
     if (password !== passwordConfirm) {
       return Alert.alert('As senhas não conferem.')
     }
+
+    navigation.navigate('Confirmation',{
+      nextScreenRoute:'SignIn',
+      title:"Conta Criada",
+      message:`Agora é so fazer login\ne aproveitar.`
+    })
   }
 
   return (
