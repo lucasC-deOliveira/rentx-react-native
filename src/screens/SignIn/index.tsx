@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 import * as Yup from "yup"
 
-import { database } from '../../database';
+
 
 import {
   StatusBar,
@@ -71,19 +71,6 @@ export function SignIn() {
   async function handleNewAccount() {
     navigation.navigate('SignUpFirstStep')
   }
-
-  useEffect(() => {
-    async function loadData() {
-      const userCollection = database.get('users')
-
-      const users = await userCollection.query().fetch()
-
-      console.log(users)
-    }
-
-    loadData()
-  }, [])
-
 
   return (
     <KeyboardAvoidingView
