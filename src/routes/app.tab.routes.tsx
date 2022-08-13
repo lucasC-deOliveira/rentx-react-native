@@ -1,15 +1,15 @@
 import React from "react"
-import { Home } from "../screens/Home"
 import { MyCars } from "../screens/MyCars"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppStackRoutes } from "./app.stack.routes"
-const { Navigator, Screen } = createBottomTabNavigator()
-
 import HomeSvg from "../assets/home.svg"
 import CarSvg from "../assets/car.svg"
 import PeopleSvg from "../assets/people.svg"
 import { useTheme } from "styled-components"
 import { Platform } from "react-native"
+import { Profile } from "../screens/Profile"
+const { Navigator, Screen } = createBottomTabNavigator()
+
 
 export function AppTabRoutes() {
   const theme = useTheme()
@@ -30,10 +30,10 @@ export function AppTabRoutes() {
             return (<HomeSvg fill={color} width={24} height={24} />)
           }
           if (route.name === 'Profile') {
-            return (<PeopleSvg fill={color} width={24} height={24}  />)
+            return (<PeopleSvg fill={color} width={24} height={24} />)
           }
-          if(route.name === 'MyCars'){
-            return (<CarSvg fill={color} width={24} height={24}  />)
+          if (route.name === 'MyCars') {
+            return (<CarSvg fill={color} width={24} height={24} />)
           }
         }
       })}
@@ -45,15 +45,17 @@ export function AppTabRoutes() {
         component={AppStackRoutes}
 
       />
-      <Screen
-        name="Profile"
-        component={Home}
-      />
 
       <Screen
         name="MyCars"
         component={MyCars}
       />
+
+      <Screen
+        name="Profile"
+        component={Profile}
+      />
+
 
     </Navigator>
 
