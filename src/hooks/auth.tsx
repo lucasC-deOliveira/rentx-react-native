@@ -15,7 +15,7 @@ interface User {
   user_id: string;
   email: string;
   name: string;
-  drive_licence: string;
+  drive_license: string;
   avatar: string;
   token: string;
 }

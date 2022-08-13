@@ -8,7 +8,6 @@ interface OptionsProps {
 }
 
 export const Container = styled.View`
- flex:1;
  background-color: ${({ theme }) => theme.colors.background_primary};
 `;
 
@@ -73,7 +72,6 @@ right: 10px;
 `
 
 export const Content = styled.View`
-flex: 1;
 padding: 0 24px;
 margin-top: 122px;
 
@@ -104,4 +102,6 @@ font-family: ${({ theme, active }) => active ? theme.fonts.secondary_600 : theme
 color:${({ theme, active }) => active ? theme.colors.header : theme.colors.text_detail}
 
   `
+export const Section = styled.View`
 
+`
