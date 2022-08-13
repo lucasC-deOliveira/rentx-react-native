@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { RFValue } from "react-native-responsive-fontsize"
 import { Ionicons } from "@expo/vector-icons"
 import Logo from "../../assets/logo.svg";
@@ -19,6 +19,7 @@ import {
   CarList,
   MyCarsButton
 } from './styles'
+import { useNetInfo } from '@react-native-community/netinfo';
 
 
 
@@ -30,9 +31,15 @@ export function Home() {
 
   const [loading, setLoading] = useState(true)
 
+  const netInfo = useNetInfo()
 
+  const navigation = useNavigation<any>()
 
   const theme = useTheme()
+
+  function handleCarDetails(car: CarDTO) {
+    navigation.navigate("CarDetails", { car })
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -59,15 +66,15 @@ export function Home() {
     }
   }, [])
 
+  useEffect(()=>{
+    if(netInfo.isConnected){
+      Alert.alert("Você esta on-line")
+    }
+    else{
+      Alert.alert("Você esta of-line")
+    }
+  },[netInfo.isConnected])
 
-
-  const navigation = useNavigation<any>()
-
-
-
-  function handleCarDetails(car: CarDTO) {
-    navigation.navigate("CarDetails", { car })
-  }
 
   return (
     <Container>
