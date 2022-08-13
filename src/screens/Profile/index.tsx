@@ -13,10 +13,11 @@ import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types'
 import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Alert
 
 } from "react-native"
-
+import * as Yup from "yup"
 
 import {
   Container,
@@ -33,13 +34,14 @@ import {
   OptionTitle,
   Section
 } from './styles'
+import { Button } from '../../components/Button';
 
 
 
 export function Profile() {
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit")
 
-  const { user, signOut } = useAuth()
+  const { user, signOut, updatedUser } = useAuth()
 
   const [avatar, setAvatar] = useState(user.avatar);
 
@@ -74,6 +76,41 @@ export function Profile() {
     const { uri } = result as ImageInfo
     if (uri) {
       setAvatar(uri)
+    }
+  }
+
+  async function handleProfileUpdate() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string()
+          .required("CNH é obrigatória"),
+        name: Yup.string()
+          .required("Nome é obrigatório")
+      })
+
+      const data = { name, driverLicense };
+
+      await schema.validate(data)
+
+      await updatedUser({
+        id: user.id,
+        user_id: user.id,
+        email: user.email,
+        name,
+        drive_license: driverLicense,
+        avatar,
+        token: user.token
+      })
+
+      Alert.alert("Perfil atualizado!")
+    }
+    catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert('Opa', error.message)
+      }
+      else {
+        Alert.alert('Não foi possivel atualizar o perfil')
+      }
     }
   }
 
@@ -169,6 +206,10 @@ export function Profile() {
 
                   />
                 </Section>}
+            <Button
+              title='Salvar alterações'
+              onPress={handleProfileUpdate}
+            />
           </Content>
 
         </Container>
