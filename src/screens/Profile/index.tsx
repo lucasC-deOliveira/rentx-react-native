@@ -4,6 +4,11 @@ import { useTheme } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from "@expo/vector-icons"
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
+import { useAuth } from '../../hooks/auth';
+import * as ImagePicker from "expo-image-picker"
+import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types'
 
 import {
   KeyboardAvoidingView,
@@ -28,9 +33,6 @@ import {
   OptionTitle,
   Section
 } from './styles'
-import { Input } from '../../components/Input';
-import { PasswordInput } from '../../components/PasswordInput';
-import { useAuth } from '../../hooks/auth';
 
 
 
@@ -38,6 +40,12 @@ export function Profile() {
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit")
 
   const { user } = useAuth()
+
+  const [avatar, setAvatar] = useState(user.avatar);
+
+  const [name, setName] = useState(user.name);
+
+  const [driverLicense, setDriverLicense] = useState(user.name)
 
   const theme = useTheme()
 
@@ -52,6 +60,23 @@ export function Profile() {
 
   function handleOptionChange(optionSelected: "dataEdit" | "passwordEdit") {
     setOption(optionSelected)
+  }
+
+  async function handleAvatarSelect() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1
+    })
+
+    if (result.cancelled) {
+      return;
+    }
+    const { uri } = result as ImageInfo
+    if (uri) {
+      setAvatar(uri)
+    }
   }
 
   return (
@@ -73,11 +98,11 @@ export function Profile() {
                 />
               </LogoutButton>
             </HeaderTop>
-            <PhotoContainer>
-              <Photo
-                source={{ uri: "https://github.com/lucasC-deOliveira.png" }}
-              />
-              <PhotoButton onPress={() => { }}>
+            <PhotoContainer >
+              {!!avatar && <Photo
+                source={{ uri: avatar }}
+              />}
+              <PhotoButton onPress={handleAvatarSelect}>
                 <Feather
                   name='camera'
                   size={24}
@@ -114,6 +139,7 @@ export function Profile() {
                     placeholder='Nome'
                     autoCorrect={false}
                     defaultValue={user.name}
+                    onChangeText={setName}
                   />
                   <Input
                     iconName='mail'
@@ -125,6 +151,7 @@ export function Profile() {
                     placeholder='CNH'
                     keyboardType='numeric'
                     defaultValue={user.drive_license}
+                    onChangeText={setDriverLicense}
                   />
                 </Section>
                 :
