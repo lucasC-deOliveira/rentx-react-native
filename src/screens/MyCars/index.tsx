@@ -1,11 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
 import { Car } from '../../components/Car';
-import { CarDTO } from '../../dtos/CarDTO';
 import api from '../../services/api';
 import { AntDesign } from "@expo/vector-icons"
 import { LoadAnimation } from '../../components/LoadAnimation';
@@ -29,14 +28,6 @@ import {
 } from './styles'
 
 
-interface CarProps {
-  id: string;
-  user_id: string;
-  car: CarDTO;
-  startDate: string;
-  endDate: string;
-
-}
 
 interface DataProps {
   id: string;
@@ -50,6 +41,8 @@ export function MyCars() {
   const [cars, setCars] = useState<DataProps[]>([])
 
   const [loading, setLoading] = useState(true)
+
+  const screenIsFocus = useIsFocused()
 
   const theme = useTheme()
 
@@ -66,6 +59,7 @@ export function MyCars() {
 
         const dataFormatted = response.data.map((data: DataProps) => {
           return {
+            id: data.id,
             car: data.car,
             start_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
             end_date: format(parseISO(data.end_date), 'dd/MM/yyyy')
@@ -82,7 +76,7 @@ export function MyCars() {
       }
     }
     fetchCars()
-  }, [])
+  }, [screenIsFocus])
   return (
     <Container>
       <Header>
