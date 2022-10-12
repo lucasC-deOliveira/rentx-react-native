@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { Alert, StatusBar, Button } from 'react-native';
 import { RFValue } from "react-native-responsive-fontsize"
 import { Ionicons } from "@expo/vector-icons"
 import Logo from "../../assets/logo.svg";
@@ -9,7 +9,9 @@ import api from "../../services/api"
 import { CarDTO } from '../../dtos/CarDTO';
 import { useTheme } from 'styled-components';
 import { LoadAnimation } from '../../components/LoadAnimation';
-
+import { synchronize } from "@nozbe/watermelondb/sync"
+import { database } from "../../database"
+import { Car as ModelCar } from "../../database/model/car"
 
 import {
   Container,
@@ -23,11 +25,12 @@ import { useNetInfo } from '@react-native-community/netinfo';
 
 
 
+
 //lottiefiles site de animações
 
 export function Home() {
 
-  const [cars, setCars] = useState<CarDTO[]>([])
+  const [cars, setCars] = useState<ModelCar[]>([])
 
   const [loading, setLoading] = useState(true)
 
@@ -41,14 +44,38 @@ export function Home() {
     navigation.navigate("CarDetails", { car })
   }
 
+  async function offlineSynchronize() {
+
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const { data } = await api
+          .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`)
+
+        const { changes, latestVersion } = data
+
+        return { changes, timestamp: latestVersion }
+      },
+      pushChanges: async ({ changes }) => {
+        const { user } = changes
+        await api.post("/user/sync", user)
+      }
+
+    })
+
+  }
+
   useEffect(() => {
     let isMounted = true
 
     async function fetchCars() {
       try {
-        const response = await api.get('/cars')
+        const carCollection = database.get<ModelCar>('cars')
+
+        const cars = await carCollection.query().fetch()
+
         if (isMounted) {
-          setCars(response.data)
+          setCars(cars)
         }
       }
       catch (error) {
@@ -66,14 +93,14 @@ export function Home() {
     }
   }, [])
 
-  useEffect(()=>{
-    if(netInfo.isConnected){
-      Alert.alert("Você esta on-line")
+  useEffect(() => {
+    if (netInfo.isConnected) {
+      offlineSynchronize()
     }
-    else{
+    else {
       Alert.alert("Você esta of-line")
     }
-  },[netInfo.isConnected])
+  }, [netInfo.isConnected])
 
 
   return (
@@ -97,6 +124,7 @@ export function Home() {
 
         </HeaderContent>
       </Header>
+
       {loading ? <LoadAnimation /> :
         <CarList
           data={cars}
