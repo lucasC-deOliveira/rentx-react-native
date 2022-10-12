@@ -35,11 +35,14 @@ import {
   Section
 } from './styles'
 import { Button } from '../../components/Button';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 
 
 export function Profile() {
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit")
+
+  const netInfo = useNetInfo()
 
   const { user, signOut, updatedUser } = useAuth()
 
@@ -59,6 +62,9 @@ export function Profile() {
 
 
   function handleOptionChange(optionSelected: "dataEdit" | "passwordEdit") {
+    if(netInfo.isConnected === false && optionSelected === 'passwordEdit'){
+      Alert.alert('Você está offline','Para mudar a senha conecte-se a internet')
+    }
     setOption(optionSelected)
   }
 

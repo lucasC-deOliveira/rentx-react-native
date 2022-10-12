@@ -94,7 +94,7 @@ export function Home() {
   }, [])
 
   useEffect(() => {
-    if (netInfo.isConnected) {
+    if (netInfo.isConnected === true) {
       offlineSynchronize()
     }
     else {
